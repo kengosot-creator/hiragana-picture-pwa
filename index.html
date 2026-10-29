@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff9ef">
+  <title>ひらがな えほん</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Hiragino Maru Gothic ProN",
+        "Yu Gothic", sans-serif;
+      background: #fff9ef;
+      color: #66564b;
+      text-align: center;
+    }
+
+    .app {
+      width: min(100%, 520px);
+      min-height: 100vh;
+      margin: auto;
+      padding: 24px 20px 36px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 8px 0 4px;
+      font-size: 28px;
+      color: #df8b79;
+      letter-spacing: 0.08em;
+    }
+
+    .subtitle {
+      margin: 0 0 22px;
+      font-size: 14px;
+      color: #9a887b;
+    }
+
+    .picture {
+      width: 190px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 35px;
+      font-size: 100px;
+      box-shadow: 0 5px 18px #e9d9c933;
+    }
+
+    .word {
+      margin-top: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #7f9d83;
+    }
+
+    .instruction {
+      margin: 20px 0 12px;
+      font-size: 16px;
+    }
+
+    .letter {
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffffa8;
+      border: 3px solid #f2e8da;
+      border-radius: 35px;
+      font-size: 175px;
+      font-weight: normal;
+      color: #dedbd6;
+      line-height: 1;
+    }
+
+    .next-button {
+      margin-top: 24px;
+      padding: 15px 42px;
+      border: none;
+      border-radius: 30px;
+      background: #edaa98;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      box-shadow: 0 4px 0 #d99483;
+      cursor: pointer;
+    }
+
+    .next-button:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #d99483;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #b0a196;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app">
+    <h1>ひらがな えほん</h1>
+    <p class="subtitle">たのしく なぞってみよう！</p>
+
+    <div class="picture" id="picture">🍎</div>
+    <div class="word" id="word">りんご</div>
+
+    <p class="instruction">ゆっくり なぞってみてね</p>
+
+    <div class="letter" id="letter">り</div>
+
+    <button class="next-button" onclick="nextLetter()">
+      つぎへ →
+    </button>
+
+    <p class="note">できた！を ひとつずつ ふやそう</p>
+  </main>
+
+  <script>
+    const letters = [
+      { letter: "り", word: "りんご", picture: "🍎" },
+      { letter: "い", word: "いぬ", picture: "🐶" },
+      { letter: "う", word: "うさぎ", picture: "🐰" },
+      { letter: "あ", word: "あり", picture: "🐜" },
+      { letter: "く", word: "くま", picture: "🐻" }
+    ];
+
+    let currentIndex = 0;
+
+    function nextLetter() {
+      currentIndex = (currentIndex + 1) % letters.length;
+
+      const item = letters[currentIndex];
+
+      document.getElementById("letter").textContent =
+        item.letter;
+      document.getElementById("word").textContent =
+        item.word;
+      document.getElementById("picture").textContent =
+        item.picture;
+    }
+  </script>
+</body>
+</html>
