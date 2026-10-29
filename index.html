@@ -6,17 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#fff9ef">
   <title>ひらがな えほん</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "Hiragino Maru Gothic ProN",
-        "Yu Gothic", sans-serif;
+      font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", sans-serif;
       background: #fff9ef;
       color: #66564b;
       text-align: center;
@@ -26,7 +22,7 @@
       width: min(100%, 520px);
       min-height: 100vh;
       margin: auto;
-      padding: 24px 20px 36px;
+      padding: 20px 16px 30px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -36,80 +32,79 @@
       margin: 8px 0 4px;
       font-size: 28px;
       color: #df8b79;
-      letter-spacing: 0.08em;
+      letter-spacing: .08em;
     }
 
-    .subtitle {
-      margin: 0 0 22px;
-      font-size: 14px;
-      color: #9a887b;
-    }
+    .subtitle { margin: 0 0 16px; color: #9a887b; font-size: 14px; }
 
     .picture {
-      width: 190px;
-      height: 160px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      border-radius: 35px;
-      font-size: 100px;
+      width: 140px;
+      height: 115px;
+      display: grid;
+      place-items: center;
+      background: white;
+      border-radius: 28px;
+      font-size: 78px;
       box-shadow: 0 5px 18px #e9d9c933;
     }
 
-    .word {
-      margin-top: 12px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #7f9d83;
-    }
+    .word { margin-top: 7px; font-size: 21px; font-weight: bold; color: #7f9d83; }
+    .instruction { margin: 14px 0 8px; font-size: 15px; }
 
-    .instruction {
-      margin: 20px 0 12px;
-      font-size: 16px;
-    }
-
-    .letter {
-      width: 240px;
-      height: 240px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #ffffffa8;
+    .writing-area {
+      position: relative;
+      width: min(88vw, 320px);
+      aspect-ratio: 1 / 1;
+      background: #ffffffb8;
       border: 3px solid #f2e8da;
-      border-radius: 35px;
-      font-size: 175px;
-      font-weight: normal;
-      color: #dedbd6;
-      line-height: 1;
+      border-radius: 28px;
+      overflow: hidden;
+      touch-action: none;
     }
 
-    .next-button {
-      margin-top: 24px;
-      padding: 15px 42px;
-      border: none;
-      border-radius: 30px;
-      background: #edaa98;
-      color: white;
-      font-size: 18px;
+    #guide, #ink {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    #guide { pointer-events: none; }
+    #ink { touch-action: none; }
+
+    .actions { display: flex; gap: 12px; margin-top: 18px; }
+
+    button {
+      padding: 13px 24px;
+      border: 0;
+      border-radius: 28px;
+      font-size: 16px;
       font-weight: bold;
-      box-shadow: 0 4px 0 #d99483;
       cursor: pointer;
     }
 
-    .next-button:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 #d99483;
+    .retry { background: #e8dfd4; color: #66564b; }
+    .next { background: #edaa98; color: white; box-shadow: 0 4px 0 #d99483; }
+    button:active { transform: translateY(2px); }
+
+    .message { min-height: 28px; margin: 12px 0 0; color: #7f9d83; font-weight: bold; }
+
+    .success {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: #fff9eff5;
+      z-index: 10;
     }
 
-    .note {
-      margin-top: 20px;
-      font-size: 12px;
-      color: #b0a196;
-    }
+    .success.show { display: flex; }
+    .maru { color: #ed8d83; font-size: min(75vw, 360px); line-height: 1; }
+    .success-text { color: #7f9d83; font-size: 30px; font-weight: bold; }
   </style>
 </head>
-
 <body>
   <main class="app">
     <h1>ひらがな えほん</h1>
@@ -117,17 +112,26 @@
 
     <div class="picture" id="picture">🍎</div>
     <div class="word" id="word">りんご</div>
+    <p class="instruction">うすい文字を ゆっくり なぞってね</p>
 
-    <p class="instruction">ゆっくり なぞってみてね</p>
+    <div class="writing-area" id="writingArea">
+      <canvas id="guide"></canvas>
+      <canvas id="ink"></canvas>
+    </div>
 
-    <div class="letter" id="letter">り</div>
+    <div class="actions">
+      <button class="retry" onclick="clearWriting()">もういちど</button>
+      <button class="next" onclick="nextLetter()">つぎへ →</button>
+    </div>
 
-    <button class="next-button" onclick="nextLetter()">
-      つぎへ →
-    </button>
-
-    <p class="note">できた！を ひとつずつ ふやそう</p>
+    <p class="message" id="message">文字の上を なぞってみよう</p>
   </main>
+
+  <div class="success" id="success">
+    <div class="maru">〇</div>
+    <div class="success-text">よくできたね！</div>
+    <button class="next" onclick="closeSuccess()" style="margin-top:24px">つづける</button>
+  </div>
 
   <script>
     const letters = [
@@ -138,20 +142,134 @@
       { letter: "く", word: "くま", picture: "🐻" }
     ];
 
+    const guide = document.getElementById("guide");
+    const ink = document.getElementById("ink");
+    const guideCtx = guide.getContext("2d");
+    const inkCtx = ink.getContext("2d");
+    const area = document.getElementById("writingArea");
+
     let currentIndex = 0;
+    let drawing = false;
+    let points = [];
+    let checked = false;
+
+    function setupCanvases() {
+      const rect = area.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+
+      [guide, ink].forEach(canvas => {
+        canvas.width = Math.round(rect.width * dpr);
+        canvas.height = Math.round(rect.height * dpr);
+        canvas.style.width = rect.width + "px";
+        canvas.style.height = rect.height + "px";
+      });
+
+      guideCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      inkCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      drawGuide();
+    }
+
+    function drawGuide() {
+      const w = area.clientWidth;
+      const h = area.clientHeight;
+      guideCtx.clearRect(0, 0, w, h);
+      guideCtx.fillStyle = "#dedbd6";
+      guideCtx.font = `normal ${Math.round(w * 0.67)}px sans-serif`;
+      guideCtx.textAlign = "center";
+      guideCtx.textBaseline = "middle";
+      guideCtx.fillText(letters[currentIndex].letter, w / 2, h / 2 + 4);
+    }
+
+    function position(event) {
+      const rect = ink.getBoundingClientRect();
+      return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    }
+
+    function startDrawing(event) {
+      if (checked) return;
+      event.preventDefault();
+      drawing = true;
+      points = [];
+      ink.setPointerCapture(event.pointerId);
+      const p = position(event);
+      points.push(p);
+      inkCtx.beginPath();
+      inkCtx.moveTo(p.x, p.y);
+    }
+
+    function draw(event) {
+      if (!drawing || checked) return;
+      event.preventDefault();
+      const p = position(event);
+      points.push(p);
+      inkCtx.lineWidth = 10;
+      inkCtx.lineCap = "round";
+      inkCtx.lineJoin = "round";
+      inkCtx.strokeStyle = "#e9a08e";
+      inkCtx.lineTo(p.x, p.y);
+      inkCtx.stroke();
+      inkCtx.beginPath();
+      inkCtx.moveTo(p.x, p.y);
+    }
+
+    function stopDrawing() {
+      if (!drawing) return;
+      drawing = false;
+      inkCtx.beginPath();
+      checkWriting();
+    }
+
+    function checkWriting() {
+      if (points.length < 12) return;
+
+      const w = area.clientWidth;
+      const h = area.clientHeight;
+      const centerX = w / 2;
+      const centerY = h / 2;
+      let nearLetter = 0;
+
+      points.forEach(p => {
+        const dx = (p.x - centerX) / (w * 0.36);
+        const dy = (p.y - centerY) / (h * 0.36);
+        if (dx * dx + dy * dy < 1.25) nearLetter++;
+      });
+
+      if (points.length >= 45 && nearLetter / points.length > 0.65) {
+        checked = true;
+        document.getElementById("message").textContent = "できたね！";
+        document.getElementById("success").classList.add("show");
+      } else {
+        document.getElementById("message").textContent = "もう少し なぞってみよう";
+      }
+    }
+
+    function clearWriting() {
+      checked = false;
+      points = [];
+      inkCtx.clearRect(0, 0, ink.width, ink.height);
+      document.getElementById("message").textContent = "文字の上を なぞってみよう";
+      document.getElementById("success").classList.remove("show");
+    }
+
+    function closeSuccess() {
+      document.getElementById("success").classList.remove("show");
+    }
 
     function nextLetter() {
       currentIndex = (currentIndex + 1) % letters.length;
-
       const item = letters[currentIndex];
-
-      document.getElementById("letter").textContent =
-        item.letter;
-      document.getElementById("word").textContent =
-        item.word;
-      document.getElementById("picture").textContent =
-        item.picture;
+      document.getElementById("picture").textContent = item.picture;
+      document.getElementById("word").textContent = item.word;
+      clearWriting();
+      drawGuide();
     }
+
+    ink.addEventListener("pointerdown", startDrawing);
+    ink.addEventListener("pointermove", draw);
+    ink.addEventListener("pointerup", stopDrawing);
+    ink.addEventListener("pointercancel", stopDrawing);
+    window.addEventListener("resize", setupCanvases);
+    setupCanvases();
   </script>
 </body>
 </html>
