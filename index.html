@@ -199,6 +199,24 @@ const letters = [
   { letter: "ぱ", word: "ぱんだ", picture: "🐼" }
 ];
 
+    // 文字ごとの判定用データ
+// 「い」の2本の線を、それぞれ別々に登録する
+const strokeGuides = {
+  "い": [
+    [
+      { x: 0.38, y: 0.30 },
+      { x: 0.36, y: 0.42 },
+      { x: 0.34, y: 0.54 },
+      { x: 0.32, y: 0.64 }
+    ],
+    [
+      { x: 0.62, y: 0.43 },
+      { x: 0.60, y: 0.52 },
+      { x: 0.57, y: 0.61 },
+      { x: 0.54, y: 0.68 }
+    ]
+  ]
+};
 
     const guide = document.getElementById("guide");
     const ink = document.getElementById("ink");
