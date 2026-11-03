@@ -107,6 +107,7 @@
 </head>
 <body>
   <main class="app">
+    <button class="settings-button" onclick="openSettings()">⚙️</button>
     <h1>ひらがな えほん</h1>
     <p class="subtitle">たのしく なぞってみよう！</p>
 
@@ -126,8 +127,41 @@
 
     <p class="message" id="message">文字の上を なぞってみよう</p>
   </main>
-
   <div class="success" id="success">
+    <div class="settings-overlay" id="settingsOverlay">
+  <div class="settings-panel">
+    <h2>れんしゅう設定 ⚙️</h2>
+    <p>むずかしさを えらんでね</p>
+
+    <label>
+      <input type="radio" name="level" value="1">
+      レベル1：じゆうに かいてみよう
+    </label>
+
+    <label>
+      <input type="radio" name="level" value="2">
+      レベル2：だいたい かけたら〇
+    </label>
+
+    <label>
+      <input type="radio" name="level" value="3">
+      レベル3：ぜんぶ とおったら〇
+    </label>
+
+    <label>
+      <input type="radio" name="level" value="4">
+      レベル4：じゅんばんどおりに かこう
+    </label>
+
+    <label>
+      <input type="radio" name="level" value="5">
+      レベル5：せいかくに かこう
+    </label>
+
+    <button class="next" onclick="closeSettings()">きめたよ！</button>
+  </div>
+</div>
+ 
     <div class="maru">〇</div>
     <div class="success-text">よくできたね！</div>
     <button class="next" onclick="closeSuccess()" style="margin-top:24px">つづける</button>
