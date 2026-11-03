@@ -89,6 +89,68 @@
 
     .message { min-height: 28px; margin: 12px 0 0; color: #7f9d83; font-weight: bold; }
 
+    .settings-button {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  background: #f2e8da;
+  color: #66564b;
+  font-size: 23px;
+}
+
+.app {
+  position: relative;
+}
+
+.settings-overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #66564b88;
+  z-index: 20;
+  padding: 20px;
+}
+
+.settings-overlay.show {
+  display: flex;
+}
+
+.settings-panel {
+  width: min(100%, 420px);
+  padding: 28px 22px;
+  border-radius: 28px;
+  background: #fff9ef;
+  box-shadow: 0 8px 30px #66564b33;
+}
+
+.settings-panel h2 {
+  margin-top: 0;
+  color: #df8b79;
+}
+
+.settings-panel label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0;
+  padding: 12px;
+  border-radius: 14px;
+  background: white;
+  text-align: left;
+  font-size: 14px;
+}
+
+.settings-panel input {
+  accent-color: #df8b79;
+  width: 20px;
+  height: 20px;
+}
     .success {
       position: fixed;
       inset: 0;
