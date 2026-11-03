@@ -320,6 +320,40 @@ const strokeGuides = {
     const inkCtx = ink.getContext("2d");
     const area = document.getElementById("writingArea");
 
+    // 難易度設定を保存・読み込み
+let difficultyLevel = Number(
+  localStorage.getItem("hiraganaDifficultyLevel") || "1"
+);
+
+function openSettings() {
+  const selected = document.querySelector(
+    `input[name="level"][value="${difficultyLevel}"]`
+  );
+
+  if (selected) {
+    selected.checked = true;
+  }
+
+  document.getElementById("settingsOverlay").classList.add("show");
+}
+
+function closeSettings() {
+  const selected = document.querySelector(
+    'input[name="level"]:checked'
+  );
+
+  if (selected) {
+    difficultyLevel = Number(selected.value);
+
+    localStorage.setItem(
+      "hiraganaDifficultyLevel",
+      String(difficultyLevel)
+    );
+  }
+
+  document.getElementById("settingsOverlay").classList.remove("show");
+}
+    
     let currentIndex = 0;
     let drawing = false;
     let points = [];
